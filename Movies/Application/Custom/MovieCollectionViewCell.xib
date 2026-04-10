@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="MovieCollectionViewCell" reuseIdentifier="movieColl" id="gTV-IL-0wX" customClass="MovieCollectionViewCell" customModule="Movies" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="140" height="200"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="140" height="200"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xn2-uQ-eIw" customClass="CardView" customModule="Movies" customModuleProvider="target">
+                        <rect key="frame" x="5" y="5" width="130" height="190"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ljn-dl-B3x">
+                                <rect key="frame" x="0.0" y="0.0" width="130" height="160"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="5" translatesAutoresizingMaskIntoConstraints="NO" id="2yz-fe-a7Z">
+                                <rect key="frame" x="8" y="164" width="114" height="26"/>
+                                <fontDescription key="fontDescription" name="KohinoorBangla-Light" family="Kohinoor Bangla" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Ljn-dl-B3x" firstAttribute="leading" secondItem="Xn2-uQ-eIw" secondAttribute="leading" id="1Uy-Wx-3bg"/>
+                            <constraint firstAttribute="bottom" secondItem="2yz-fe-a7Z" secondAttribute="bottom" id="DCQ-2E-jG5"/>
+                            <constraint firstAttribute="trailing" secondItem="Ljn-dl-B3x" secondAttribute="trailing" id="Es6-7y-ezH"/>
+                            <constraint firstItem="2yz-fe-a7Z" firstAttribute="top" secondItem="Ljn-dl-B3x" secondAttribute="bottom" constant="4" id="Ghw-ws-C4P"/>
+                            <constraint firstAttribute="bottom" secondItem="Ljn-dl-B3x" secondAttribute="bottom" constant="30" id="OyO-Bq-e0W"/>
+                            <constraint firstItem="Ljn-dl-B3x" firstAttribute="top" secondItem="Xn2-uQ-eIw" secondAttribute="top" id="TWp-T6-mey"/>
+                            <constraint firstItem="2yz-fe-a7Z" firstAttribute="leading" secondItem="Xn2-uQ-eIw" secondAttribute="leading" constant="8" id="Vce-ma-N76"/>
+                            <constraint firstAttribute="trailing" secondItem="2yz-fe-a7Z" secondAttribute="trailing" constant="8" id="wo8-Bt-SSA"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="shadowColorCV">
+                                <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                                <real key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="Xn2-uQ-eIw" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="C7e-KW-4cz"/>
+                <constraint firstAttribute="trailing" secondItem="Xn2-uQ-eIw" secondAttribute="trailing" constant="5" id="KPd-nw-Q4X"/>
+                <constraint firstAttribute="bottom" secondItem="Xn2-uQ-eIw" secondAttribute="bottom" constant="5" id="WiD-XK-T7D"/>
+                <constraint firstItem="Xn2-uQ-eIw" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="5" id="dOO-9z-A7d"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <connections>
+                <outlet property="imgMovie" destination="Ljn-dl-B3x" id="YjR-b0-5W3"/>
+                <outlet property="titleMovie" destination="2yz-fe-a7Z" id="1kh-wp-R7n"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="152.67857142857142"/>
+        </collectionViewCell>
+    </objects>
+</document>
