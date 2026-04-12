@@ -1,77 +1,143 @@
 ## Context
 
-O app de filmes possui fluxo de navegação entre Movie List e Movie Detail, mas não conta com camada de autenticação. A tela de login será a porta de entrada para todos os usuários não autenticados, integrando-se ao design system existente (tema escuro, acento verde neon `#00E676`) e ao fluxo de navegação já estabelecido.
+O app de filmes será construído em Flutter com suporte simultâneo a iOS e Android. A tela de login é a porta de entrada para usuários não autenticados e precisa integrar Firebase Authentication (e-mail/senha + OAuth Google) com a REST API do projeto, que utiliza o próprio token Firebase como Bearer JWT.
 
-O projeto ainda não possui um serviço de autenticação definido. Esta decisão de design aborda a escolha da estratégia de autenticação e os padrões de implementação para mobile.
+O design system já está definido no Figma (tema escuro, acento `#00E676`) e será traduzido para tokens Dart em `app/theme/tokens.dart`.
 
 ## Goals / Non-Goals
 
 **Goals:**
-- Definir a arquitetura de autenticação (provedor, armazenamento de token, fluxo OAuth)
-- Estabelecer o padrão de validação de formulários para a tela de login
-- Definir a estratégia de gerenciamento de estado durante o fluxo de autenticação
-- Garantir armazenamento seguro de credenciais/tokens no dispositivo
+- Definir a stack de autenticação em Flutter (Firebase Auth + Riverpod)
+- Estabelecer o padrão de injeção do Bearer JWT nas requisições REST via interceptor Dio
+- Definir armazenamento seguro do token de sessão no dispositivo
+- Definir navegação pós-login com proteção de rotas
 
 **Non-Goals:**
-- Implementar tela de cadastro de novo usuário (escopo futuro)
-- Implementar tela de recuperação de senha (referenciada na spec, mas fora deste escopo)
+- Implementar tela de cadastro de novo usuário
+- Implementar tela de recuperação de senha
 - Definir autorização (permissões e roles) — apenas autenticação
+- Sincronização de favoritos com servidor (Realm é source of truth local)
 
 ## Decisions
 
-### 1. Provedor de Autenticação: Firebase Authentication
+### 1. Gerenciamento de Estado: Riverpod 2.x com AsyncNotifier
 
-Adotar o Firebase Authentication como backend de autenticação, suportando e-mail/senha e OAuth com Google.
+Adotar `flutter_riverpod` com `AsyncNotifier` para o estado da tela de login e `StreamNotifier` para o estado de autenticação global.
 
-**Alternativas consideradas:**
-- **API REST própria**: Requer implementação do servidor de auth do zero, aumenta tempo e risco de segurança. Rejeitado pelo custo de desenvolvimento.
-- **Supabase Auth**: Boa alternativa, mas o ecossistema Firebase já é familiar e tem SDK mobile maduro.
-- **Auth0**: Mais robusto para enterprise, mas overkill para o estágio atual do projeto.
-
----
-
-### 2. Armazenamento de Token: Keychain (iOS) / Keystore (Android)
-
-O token de sessão retornado pelo Firebase SHALL ser armazenado no cofre seguro do sistema operacional, nunca em AsyncStorage ou SharedPreferences.
-
-**Alternativas consideradas:**
-- **AsyncStorage**: Armazenamento em texto plano, vulnerável a leitura por outros apps em dispositivos com root/jailbreak. Rejeitado por razões de segurança.
-- **SecureStore (Expo)**: Abstração do Keychain/Keystore — adotar se o projeto usar Expo; caso contrário, usar `react-native-keychain` diretamente.
-
----
-
-### 3. Gerenciamento de Estado: Context API + useReducer
-
-O estado de autenticação (usuário autenticado, token, loading, erro) será gerenciado via React Context + `useReducer`, exposto através de um `AuthContext` global.
-
-**Estados do reducer:**
+**Estados do LoginNotifier:**
 ```
 idle | loading | authenticated | error
 ```
 
 **Alternativas consideradas:**
-- **Redux Toolkit**: Adequado para projetos maiores. Rejeitado por overhead desnecessário para um contexto de auth simples.
-- **Zustand**: Boa alternativa leve. Pode ser adotado no futuro se o estado global crescer além do auth.
+- **BLoC/Cubit**: robusto, mas verboso demais para uma tela com dois campos e um fluxo linear. Rejeitado pelo overhead de Events + States + Blocs.
+- **Provider + ChangeNotifier**: cresce mal quando auth e outros domínios precisam se comunicar sem `BuildContext`. Rejeitado.
+- **GetX**: mistura navegação + estado + DI num único pacote, dificultando testes isolados. Rejeitado.
 
 ---
 
-### 4. Validação de Formulário: Validação inline (on blur + on submit)
+### 2. Navegação: GoRouter com redirect guard
 
-A validação SHALL ocorrer em dois momentos:
-1. **On blur**: Ao sair de cada campo individualmente
-2. **On submit**: Antes de disparar a requisição de autenticação
+Adotar `go_router` para navegação declarativa com proteção de rotas baseada no estado do `authStateProvider`.
 
-Não utilizar bibliotecas como Formik ou React Hook Form neste momento — a tela tem apenas 2 campos e a complexidade não justifica a dependência.
+O guard fica em um único lugar no `router.dart`:
+
+```dart
+redirect: (context, state) {
+  final isAuth = ref.read(authStateProvider).isAuthenticated;
+  if (!isAuth && !state.uri.path.startsWith('/login')) return '/login';
+  if (isAuth && state.uri.path == '/login') return '/movies';
+  return null;
+}
+```
+
+Após login bem-sucedido, navegar com `context.go('/movies')` — não `push` — para remover `/login` da stack e impedir retorno pelo botão voltar.
+
+**Alternativas consideradas:**
+- **Navigator 2.0 manual**: controle total, mas boilerplate alto e difícil de manter. Rejeitado.
+- **auto_route**: geração de código, boa alternativa. Preterido pelo GoRouter ter suporte oficial Flutter team.
 
 ---
 
-### 5. Fluxo de Navegação Pós-Login
+### 3. Autenticação: Firebase Auth (e-mail/senha + Google OAuth)
 
-Após autenticação bem-sucedida, o usuário é navegado para `MovieListScreen` usando `navigation.replace()` (não `navigate()`), removendo a tela de login da stack de navegação e impedindo que o botão "voltar" retorne ao login.
+Firebase Authentication como provedor único de identidade. O token JWT gerado pelo Firebase é reutilizado como Bearer nas requisições à REST API — sem segundo sistema de auth.
+
+**Configurações necessárias por plataforma:**
+- Android: `google-services.json` em `android/app/`
+- iOS: `GoogleService-Info.plist` em `ios/Runner/` + URL schemes no `Info.plist`
+- SHA-1 do app registrado no Firebase Console para habilitar OAuth Google no Android
+
+---
+
+### 4. Injeção de Bearer JWT: AuthInterceptor no Dio
+
+O token Firebase expira a cada hora. Um `Interceptor` no Dio renova e injeta o token automaticamente em toda requisição REST, sem que nenhum Notifier ou Widget precise gerenciar isso.
+
+```dart
+class AuthInterceptor extends Interceptor {
+  final FirebaseAuth _auth;
+
+  @override
+  void onRequest(options, handler) async {
+    final token = await _auth.currentUser?.getIdToken(true);
+    if (token != null) {
+      options.headers['Authorization'] = 'Bearer $token';
+    }
+    handler.next(options);
+  }
+
+  @override
+  void onError(DioException err, handler) async {
+    if (err.response?.statusCode == 401) {
+      final token = await _auth.currentUser?.getIdToken(true);
+      err.requestOptions.headers['Authorization'] = 'Bearer $token';
+      final retry = await Dio().fetch(err.requestOptions);
+      return handler.resolve(retry);
+    }
+    handler.next(err);
+  }
+}
+```
+
+`FirebaseAuth` e `Dio` ficam acoplados apenas no interceptor, isolados do restante da app.
+
+---
+
+### 5. Armazenamento Seguro: flutter_secure_storage
+
+O token de sessão SHALL ser persistido via `flutter_secure_storage`, que usa Keychain no iOS e Keystore no Android. Nunca `SharedPreferences` (texto plano).
+
+**Alternativas consideradas:**
+- **SharedPreferences**: armazenamento em texto plano, vulnerável em dispositivos com root/jailbreak. Rejeitado por segurança.
+- **Hive**: rápido para dados estruturados, mas sem criptografia nativa para tokens sensíveis. Rejeitado.
+
+---
+
+### 6. Validação de Formulário: inline manual (on blur + on submit)
+
+A tela tem apenas dois campos. Não justifica adicionar `flutter_form_builder` ou similar.
+
+Validação ocorre em dois momentos:
+1. **On blur** (`onEditingComplete` / `FocusNode`): ao sair de cada campo
+2. **On submit**: antes de disparar `signInWithEmail()`
+
+---
+
+### 7. Abstração do AuthService
+
+Chamadas ao Firebase devem ser encapsuladas em um `AuthRepository`, nunca chamadas diretamente nos Notifiers. Isso permite trocar o provedor de autenticação sem tocar na camada de apresentação.
+
+```
+LoginNotifier
+    └── AuthRepository (interface)
+            └── FirebaseAuthSource (implementação)
+```
 
 ## Risks / Trade-offs
 
-- **Firebase lock-in**: Adotar Firebase como provedor cria dependência do serviço. Mitigação: abstrair chamadas de auth em um serviço (`AuthService`) para facilitar troca futura de provedor.
-- **OAuth Google em ambiente de desenvolvimento**: Requer configuração de SHA-1 no Firebase Console e arquivo `google-services.json` (Android) / `GoogleService-Info.plist` (iOS). Pode atrasar o primeiro setup.
-- **Sessão persistente vs. segurança**: Manter o usuário logado melhora UX mas aumenta o risco em dispositivos compartilhados. Mitigação: implementar timeout de sessão configurável (ex: 30 dias) em versão futura.
-- **Validação apenas no cliente**: A validação de formato de e-mail no front-end não substitui validação no servidor. O Firebase já rejeita e-mails malformados na API, mas erros devem ser tratados na camada de serviço.
+- **Firebase lock-in** → Mitigação: `AuthRepository` como interface abstrai o provedor. Troca futura afeta apenas `FirebaseAuthSource`.
+- **Token JWT expira em 1h** → Mitigado pelo `AuthInterceptor` com retry automático em 401.
+- **OAuth Google em Android requer SHA-1** → Pode atrasar o setup inicial em máquinas novas. Documentar no README do projeto.
+- **flutter_secure_storage em Android API < 23** → Requer `minSdkVersion 23` no `build.gradle`. Definir isso antes de configurar o projeto.
+- **Sessão persistente** → Usuário permanece logado indefinidamente. Mitigação futura: timeout de sessão configurável.
