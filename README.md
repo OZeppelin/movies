@@ -10,10 +10,6 @@ Este repositório é um projeto de estudo que explora o **Spec Driven Developmen
 
 O fluxo é conduzido pelo **OpenSpec**, uma ferramenta que organiza e rastreia os artefatos de cada mudança, e pelo **Claude IA**, que atua como parceiro em todas as etapas: exploração de ideias, criação de especificações, geração de design no Figma via MCP e implementação.
 
-## Visão geral
-
-O movieApp permite ao usuário descobrir, avaliar e salvar filmes em uma watchlist. A identidade visual é inspirada no app Taxio — amarelo âmbar `#F5C142` sobre dark `#1A1A2E` —, combinação que evoca a atmosfera do cinema sem abrir mão de legibilidade.
-
 ## Stack
 
 - **Mobile:** Flutter (Dart)
@@ -41,26 +37,38 @@ Os tokens seguem o naming do Flutter `ThemeData` para eliminar mapeamento adicio
 | `colorScheme/error` | `#E53E3E` |
 | `textTheme/titleLarge` | Bold, 28px |
 | `textTheme/bodyMedium` | Regular, 16px |
+| `spacing/lg` | 16px (base do grid de 4pt) |
+| `borderRadius/pill` | 100px |
 
 ### Componentes
 
 `Button` · `Input` · `Avatar` · `MovieCard` · `RatingStars` · `GenreTag` · `BottomNav`
 
-Todos os componentes usam Figma Auto Layout e variants no padrão `Type / State / Size`.
+Todos os componentes usam Figma Auto Layout e variants no padrão `Type / State / Size`. Nenhuma cor é hardcoded — todas as propriedades referenciam Figma Variables da Library.
 
 ### Fluxo de autenticação (11 telas)
 
 Splash → Onboarding (×3) → Cadastro (×3) → OTP → Login → Biometria → Esqueci minha senha
 
+Telas conectadas via protótipo navegável no arquivo `movieApp DS — Login Flow`. Todos os campos de input usam largura padronizada de `327px` (`W - 48`, com padding lateral de `24px`).
+
+## Histórico de mudanças (OpenSpec)
+
+| Mudança | Status | Descrição |
+|---|---|---|
+| `movieapp-design-system-figma` | Concluída | Criação do design system no Figma: tokens, componentes e fluxo de login |
+| `fix-textfield-width-login-flow` | Em andamento | Correção da largura dos TextFields em 6 telas do Login Flow para `327px` |
+
 ## Estrutura do repositório
 
 ```
 openspec/
-├── config.yaml          # Configuração do workflow OpenSpec
-├── specs/               # Especificações principais do projeto
-└── changes/             # Mudanças em andamento e arquivadas
-    └── movieapp-design-system-figma/
-        ├── proposal.md  # O quê e por quê
-        ├── design.md    # Decisões de arquitetura
-        └── tasks.md     # Tarefas de implementação
+├── config.yaml              # Configuração do workflow OpenSpec
+├── specs/                   # Especificações vivas do projeto
+│   ├── design-tokens/       # Foundations: cores, tipografia, espaçamento, border radius
+│   ├── component-library/   # Componentes Figma com variants e estados
+│   └── login-flow/          # Fluxo completo de autenticação (11 telas)
+└── changes/
+    ├── fix-textfield-width-login-flow/   # Mudança em andamento
+    └── archive/                          # Mudanças concluídas
 ```
