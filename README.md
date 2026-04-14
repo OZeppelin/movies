@@ -1,6 +1,14 @@
 # movieApp
 
+> Projeto de estudo — Spec Driven Development com [OpenSpec](https://github.com/Anthropic/openspec) e Claude IA.
+
 Aplicativo mobile de filmes construído em Flutter, com design system documentado no Figma e tokens alinhados ao `ThemeData` do Flutter.
+
+## Sobre o projeto
+
+Este repositório é um projeto de estudo que explora o **Spec Driven Development (SDD)** — uma abordagem em que cada mudança no projeto começa por artefatos de especificação (proposta, design, tarefas) antes de qualquer linha de código ser escrita.
+
+O fluxo é conduzido pelo **OpenSpec**, uma ferramenta que organiza e rastreia os artefatos de cada mudança, e pelo **Claude IA**, que atua como parceiro em todas as etapas: exploração de ideias, criação de especificações, geração de design no Figma via MCP e implementação.
 
 ## Visão geral
 
