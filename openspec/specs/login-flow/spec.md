@@ -8,7 +8,7 @@ Define the complete authentication flow as 11 navigable Figma frames in the "mov
 
 ### Requirement: Fluxo completo de autenticação em 11 telas Figma
 
-O sistema SHALL criar 11 frames no arquivo "movieApp DS — Login Flow" representando o fluxo completo de autenticação, conectados via protótipo navegável, consumindo componentes da Library.
+O sistema SHALL criar 11 frames no arquivo "movieApp DS — Login Flow" representando o fluxo completo de autenticação, conectados via protótipo navegável, consumindo componentes da Library. Todos os campos de input (TextField) nas telas SHALL ter largura de `W - 48px` (327px para tela de 375px), alinhados com `x = 24px`, mantendo consistência visual com os botões CTA.
 
 #### Scenario: Tela Splash presente e configurada
 
@@ -28,6 +28,7 @@ O sistema SHALL criar 11 frames no arquivo "movieApp DS — Login Flow" represen
 - **THEN** SHALL existir frames `05-Cadastro-Step1` (Nome + Telefone), `06-Cadastro-Step2` (Email + Senha), `07-Cadastro-Step3` (Confirmação + Avatar opcional)
 - **THEN** cada step SHALL exibir indicador de progresso (ex: "Passo 1 de 3")
 - **THEN** campos SHALL usar componente Input da Library
+- **THEN** todos os campos de Input SHALL ter largura de 327px e `x = 24px`
 
 #### Scenario: Verificação OTP
 
@@ -38,6 +39,7 @@ O sistema SHALL criar 11 frames no arquivo "movieApp DS — Login Flow" represen
 
 - **WHEN** o usuário escolhe "Entrar" no Splash
 - **THEN** SHALL existir frame `09-Login` com campos Email e Senha, botão "Entrar" (Primary), link "Esqueci minha senha", e opções de social login (Google, Apple, Facebook)
+- **THEN** os campos Email e Senha SHALL ter largura de 327px e `x = 24px`
 
 #### Scenario: Autenticação biométrica
 
@@ -47,7 +49,7 @@ O sistema SHALL criar 11 frames no arquivo "movieApp DS — Login Flow" represen
 #### Scenario: Recuperação de senha
 
 - **WHEN** o usuário clica em "Esqueci minha senha"
-- **THEN** SHALL existir frame `11-Esqueci-Senha` com campo de email, botão "Enviar link" e confirmação visual de envio
+- **THEN** SHALL existir frame `11-Esqueci-Senha` com campo de email com largura de 327px e `x = 24px`, botão "Enviar link" e confirmação visual de envio
 
 #### Scenario: Telas conectadas via protótipo
 
@@ -58,3 +60,9 @@ O sistema SHALL criar 11 frames no arquivo "movieApp DS — Login Flow" represen
 
 - **WHEN** qualquer tela do Login Flow é inspecionada
 - **THEN** botões, inputs e outros elementos SHALL ser instâncias dos componentes da Library, não elementos avulsos
+
+#### Scenario: Campos de input com largura padronizada
+
+- **WHEN** qualquer frame de Input é inspecionado nas telas do Login Flow
+- **THEN** o frame SHALL ter `width = 327px` e `x = 24px`
+- **THEN** o campo SHALL se estender visualmente da margem esquerda à margem direita com padding simétrico de 24px
