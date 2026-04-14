@@ -1,8 +1,0 @@
-schema: spec-driven
-defaultSchema: meu-teste-figma-claude
-context: |
-  Language: Portuguese (pt-BR)
-  All artifacts must be written in Brazilian Portuguese.
-  Write in Portuguese (pt-BR), but:
-  - Keep technical terms like "API", "REST", "GraphQL", "Figma", "Swift", "Xcode", "SwiftUI" in English
-  - Code examples and file paths remain in English
