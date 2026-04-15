@@ -21,3 +21,8 @@
 
 - [x] 3.1 Importar `OnboardingScreen` em `main.dart`
 - [x] 3.2 Trocar `home` de `SplashScreen` para `OnboardingScreen` mantendo o `Builder` e o callback `onForgotPassword` acessível via `SplashScreen`
+
+## 4. Verificação
+
+- [x] 4.1 Executar `flutter analyze` e corrigir eventuais warnings ou erros
+- [x] 4.2 Executar o app no simulador iOS e confirmar que a `OnboardingScreen` aparece corretamente
