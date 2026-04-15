@@ -33,7 +33,9 @@
       "Bash(echo \"Starting Android emulator run in background PID: $!\")",
       "Bash(gem environment:*)",
       "Bash(brew install:*)",
-      "Bash(export PATH=\"/opt/homebrew/bin:$PATH\")"
+      "Bash(export PATH=\"/opt/homebrew/bin:$PATH\")",
+      "Bash(openspec new:*)",
+      "mcp__plugin_figma_figma__get_design_context"
     ]
   }
 }
