@@ -53,3 +53,11 @@ O projeto SHALL fornecer uma classe base `BaseViewModel` que estende `ChangeNoti
 #### Scenario: Notificação de mudança de estado
 - **WHEN** um ViewModel chama `notifyListeners()`
 - **THEN** todas as Views registradas SHALL receber a atualização e reconstruir os widgets afetados
+
+### Requirement: main.dart conecta onRegister da SplashScreen
+O `main.dart` SHALL passar o callback `onRegister` à `SplashScreen` navegando para `CriarContaStep1Screen` via `Navigator.push`.
+
+#### Scenario: Callback onRegister conectado
+- **WHEN** o app é iniciado e `SplashScreen` é renderizada via `OnboardingScreen`
+- **THEN** o `onRegister` da `SplashScreen` SHALL estar conectado a uma navegação `Navigator.push` para `CriarContaStep1Screen`
+- **THEN** o `onForgotPassword` SHALL continuar conectado a `EsqueciSenhaScreen` (sem regressão)
