@@ -48,7 +48,8 @@
       "Bash(openspec list *)",
       "Bash(open -a Simulator)",
       "mcp__dart__get_runtime_errors",
-      "mcp__dart__hot_reload"
+      "mcp__dart__hot_reload",
+      "mcp__dart__list_running_apps"
     ]
   }
 }
