@@ -61,3 +61,11 @@ O `main.dart` SHALL passar o callback `onRegister` à `SplashScreen` navegando p
 - **WHEN** o app é iniciado e `SplashScreen` é renderizada via `OnboardingScreen`
 - **THEN** o `onRegister` da `SplashScreen` SHALL estar conectado a uma navegação `Navigator.push` para `CriarContaStep1Screen`
 - **THEN** o `onForgotPassword` SHALL continuar conectado a `EsqueciSenhaScreen` (sem regressão)
+
+### Requirement: onboarding_screen.dart conecta onLogin da SplashScreen
+O `onboarding_screen.dart` SHALL passar o callback `onLogin` à `SplashScreen` navegando para `LoginScreen` via `Navigator.push`.
+
+#### Scenario: Callback onLogin conectado
+- **WHEN** o usuário chega à `SplashScreen` via onboarding
+- **THEN** o `onLogin` da `SplashScreen` SHALL navegar para `LoginScreen` via `Navigator.push`
+- **THEN** `onForgotPassword` e `onRegister` SHALL continuar funcionando (sem regressão)
