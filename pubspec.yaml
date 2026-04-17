@@ -40,6 +40,7 @@ dependencies:
   google_sign_in: ^7.0.0
   sign_in_with_apple: ^7.0.1
   firebase_database: ^11.3.10
+  device_info_plus: ^10.1.2
 
 dev_dependencies:
   flutter_test:
