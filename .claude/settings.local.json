@@ -36,7 +36,19 @@
       "Bash(export PATH=\"/opt/homebrew/bin:$PATH\")",
       "Bash(openspec new:*)",
       "mcp__plugin_figma_figma__get_design_context",
-      "Bash(xcrun simctl:*)"
+      "Bash(xcrun simctl:*)",
+      "mcp__dart__analyze_files",
+      "mcp__dart__list_devices",
+      "mcp__dart__launch_app",
+      "mcp__dart__connect_dart_tooling_daemon",
+      "mcp__dart__get_widget_tree",
+      "mcp__dart__get_app_logs",
+      "mcp__dart__stop_app",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d.get\\('state',''\\), d.get\\('progress',{}\\)\\)\")",
+      "Bash(openspec list *)",
+      "Bash(open -a Simulator)",
+      "mcp__dart__get_runtime_errors",
+      "mcp__dart__hot_reload"
     ]
   }
 }

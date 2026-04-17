@@ -10,6 +10,7 @@ O projeto usa `provider` com `BaseViewModel extends ChangeNotifier`. Só existe 
 - `LoginScreen` vira `StatelessWidget` com `ChangeNotifierProvider` + `Consumer<LoginViewModel>`
 - `TextEditingController`s ficam na View (estado de formulário puro, não negócio)
 - Firebase/Google/Apple imports saem da View
+- Utilizar as melhores práticas da arquitetura de acorod com a skill flutter-architecture
 
 **Non-Goals:**
 - Injeção de dependência (DI) via `get_it` ou similar
