@@ -1,13 +1,4 @@
-### Requirement: UserService busca usuário por email
-O sistema SHALL fornecer `UserService.getUserByEmail(String email)` que consulta todos os nós em `user/` no Realtime Database e retorna o primeiro `UserModel` cujo campo `email` corresponda (case-insensitive), ou `null` se não encontrado.
-
-#### Scenario: Usuário encontrado por email
-- **WHEN** `getUserByEmail` é chamado com email cadastrado
-- **THEN** retorna o `UserModel` correspondente com todos os campos preenchidos
-
-#### Scenario: Usuário não encontrado
-- **WHEN** `getUserByEmail` é chamado com email não cadastrado
-- **THEN** retorna `null`
+## MODIFIED Requirements
 
 ### Requirement: LoginViewModel autentica email/senha via Realtime Database
 O sistema SHALL autenticar o usuário em `entrarComEmail` buscando o registro na tabela `user/` do Realtime Database via `UserService.getUserByEmail` e comparando a senha informada com `UserModel.password`. Não SHALL usar `FirebaseAuth.signInWithEmailAndPassword` para este fluxo.
@@ -24,12 +15,7 @@ O sistema SHALL autenticar o usuário em `entrarComEmail` buscando o registro na
 - **WHEN** usuário encontrado mas `user.password != senha`
 - **THEN** `errorMessage` é definido como `'Email ou senha inválidos'` e retorna `false`
 
-### Requirement: LoginViewModel expõe perfil do usuário logado
-O sistema SHALL armazenar o `UserModel` retornado por `getUserByEmail` em `LoginViewModel` após autenticação bem-sucedida, exposto via getter `loggedUser`.
-
-#### Scenario: loggedUser preenchido após login
-- **WHEN** `entrarComEmail` retorna `true`
-- **THEN** `loggedUser` contém o `UserModel` correspondente ao email informado
+## MODIFIED Requirements
 
 ### Requirement: LoginViewModel integra LoginService após autenticação
 O sistema SHALL, após autenticação bem-sucedida via Realtime Database, chamar `LoginService.saveLog` com `idUser = user.id` (UDID do device) e `createdAt = DateTime.now().toIso8601String()`.
@@ -41,14 +27,3 @@ O sistema SHALL, após autenticação bem-sucedida via Realtime Database, chamar
 #### Scenario: Falha no log não bloqueia login
 - **WHEN** `saveLog` lança exceção
 - **THEN** o login ainda retorna `true`
-
-### Requirement: AlertDialog exibe dados do perfil do usuário
-O sistema SHALL exibir no AlertDialog o nome do usuário (`loggedUser?.name`) quando disponível, além do email. Quando `loggedUser` for `null`, exibe apenas o email.
-
-#### Scenario: AlertDialog com nome e email
-- **WHEN** `loggedUser` não é `null`
-- **THEN** AlertDialog exibe "Bem-vindo, {nome}" e email
-
-#### Scenario: AlertDialog somente com email
-- **WHEN** `loggedUser` é `null`
-- **THEN** AlertDialog exibe apenas o email do usuário
