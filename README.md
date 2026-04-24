@@ -139,3 +139,7 @@ openspec/
     ├── mask-telefone-cadastro/   # Mudança em andamento
     └── archive/                  # Mudanças concluídas
 ```
+
+
+https://github.com/user-attachments/assets/6a9de6a0-a134-4402-b99e-9ec320ae581a
+
