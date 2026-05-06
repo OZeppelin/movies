@@ -6,7 +6,21 @@
       "Bash(openspec instructions *)",
       "mcp__plugin_figma_figma__get_design_context",
       "mcp__plugin_figma_figma__get_metadata",
-      "Bash(openspec list *)"
+      "Bash(openspec list *)",
+      "Bash(npm --version)",
+      "Bash(npx @react-native-community/cli@latest init movieAppMobile --directory mobile --skip-install)",
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(curl --version)",
+      "Bash(curl -sL \"https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2\" -o Inter-Regular.ttf)",
+      "Bash(curl -sL \"https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuOKfAZ9hiJ-Ek-_EeA.woff2\" -o Inter-Medium.ttf)",
+      "Bash(curl -sL \"https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuGKYAZ9hiJ-Ek-_EeA.woff2\" -o Inter-SemiBold.ttf)",
+      "Bash(curl -sL \"https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuFuYAZ9hiJ-Ek-_EeA.woff2\" -o Inter-Bold.ttf)",
+      "Bash(xcode-select -p)",
+      "Bash(xcrun simctl *)",
+      "Bash(npx react-native *)",
+      "Bash(pkill -f \"metro\")",
+      "Bash(xargs kill *)"
     ]
   }
 }
